@@ -113,6 +113,7 @@ typedef struct
 // Global variables
 #define MAX_USERS 100
 int userCount = 0;
+int i=0;
 User users[MAX_USERS];
 User currentUser = {"", "", "", "", {0}, 0};
 
@@ -132,7 +133,6 @@ void displayMenu()
         "\t\t|    3. Exit                        |\n"
         "\t\t=====================================\n"
         "\n\t\tPlease enter your choice: ";
-    int i;
     for (i = 0; i < strlen(menu); i++)
     {
         switch (menu[i])
@@ -191,7 +191,6 @@ void login()
     scanf("%s", currentUser.name);
     printf("\t\tEnter your password: ");
     scanf("%s", currentUser.pass);
-    int i;
     for (i = 0; i < userCount; i++)
     {
         if (strcmp(currentUser.name, users[i].name) == 0 && strcmp(currentUser.pass, users[i].pass) == 0)
@@ -204,7 +203,6 @@ void login()
             // puts(currentUser.phone);
             // puts(currentUser.meter);
             // printf("%f\n", currentUser.prev);
-            int i;
             // for (i = 0; i < 12; i++)
             // {
             //     printf("%f ", currentUser.history[i]);
@@ -232,7 +230,6 @@ void login()
         //         token = strtok(NULL, ",");
         //         currentUser.prev = atof(token);
         //         token = strtok(NULL, ",");
-        int i;
         //         for (i = 0; i < 12; i++)
         //         {
         //             currentUser.history[i] = atof(token);
@@ -301,7 +298,6 @@ void registerUser()
     scanf("%s", currentUser.meter);
     // check if user already exists
     int found = 0;
-    int i;
     for (i = 0; i < userCount; i++)
     {
         if (strcmp(currentUser.name, users[i].name) == 0)
@@ -354,7 +350,6 @@ void home()
                  "\t\t|    3. Logout                      |\n"
                  "\t\t=====================================\n"
                  "\n\t\tPlease enter your choice: ";
-    int i;
     for (i = 0; i < strlen(menu); i++)
     {
         switch (menu[i])
@@ -439,7 +434,6 @@ void loadUsers()
         token = strtok(line2, ",");
         token = strtok(NULL, ",");
         users[userCount].prev = atof(token);
-        int i;
         for (i = 0; i < 12; i++)
         {
             token = strtok(NULL, ",");
@@ -495,7 +489,6 @@ void payBill()
     currentUser.prev = curr;
     // shift the history
     double tmp;
-    int i;
     for (i = 0; i < 12; i++)
     {
         tmp = currentUser.history[i];
@@ -539,7 +532,6 @@ void viewBill()
     puts(BCYN "\t\t=" BBLU " Your Bill History (last 12 month) " BCYN "=" COLOR_RESET);
     puts(BCYN "\t\t=====================================" COLOR_RESET);
     puts(BCYN "\t\t|" BMAG "      Month      "BCYN"|"BYEL"       Bill      "BCYN"|" COLOR_RESET);
-    int i;
     for (i = 0; i < 12; i++)
     {
         puts(BCYN "\t\t|=================|=================|" COLOR_RESET);
@@ -594,7 +586,6 @@ void showUsers()
         puts(user.meter);
         puts(user.phone);
         printf("%lf\n", user.prev);
-        int i;
         for (i = 0; i < 12; i++)
         {
             printf("%lf ", user.history[i]);

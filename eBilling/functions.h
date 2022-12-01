@@ -132,7 +132,8 @@ void displayMenu()
         "\t\t|    3. Exit                        |\n"
         "\t\t=====================================\n"
         "\n\t\tPlease enter your choice: ";
-    for (int i = 0; i < strlen(menu); i++)
+    int i;
+    for (i = 0; i < strlen(menu); i++)
     {
         switch (menu[i])
         {
@@ -190,7 +191,8 @@ void login()
     scanf("%s", currentUser.name);
     printf("\t\tEnter your password: ");
     scanf("%s", currentUser.pass);
-    for (int i = 0; i < userCount; i++)
+    int i;
+    for (i = 0; i < userCount; i++)
     {
         if (strcmp(currentUser.name, users[i].name) == 0 && strcmp(currentUser.pass, users[i].pass) == 0)
         {
@@ -202,7 +204,8 @@ void login()
             // puts(currentUser.phone);
             // puts(currentUser.meter);
             // printf("%f\n", currentUser.prev);
-            // for (int i = 0; i < 12; i++)
+            int i;
+            // for (i = 0; i < 12; i++)
             // {
             //     printf("%f ", currentUser.history[i]);
             // }
@@ -229,7 +232,8 @@ void login()
         //         token = strtok(NULL, ",");
         //         currentUser.prev = atof(token);
         //         token = strtok(NULL, ",");
-        //         for (int i = 0; i < 12; i++)
+        int i;
+        //         for (i = 0; i < 12; i++)
         //         {
         //             currentUser.history[i] = atof(token);
         //             token = strtok(NULL, ",");
@@ -297,7 +301,8 @@ void registerUser()
     scanf("%s", currentUser.meter);
     // check if user already exists
     int found = 0;
-    for (int i = 0; i < userCount; i++)
+    int i;
+    for (i = 0; i < userCount; i++)
     {
         if (strcmp(currentUser.name, users[i].name) == 0)
         {
@@ -349,7 +354,8 @@ void home()
                  "\t\t|    3. Logout                      |\n"
                  "\t\t=====================================\n"
                  "\n\t\tPlease enter your choice: ";
-    for (int i = 0; i < strlen(menu); i++)
+    int i;
+    for (i = 0; i < strlen(menu); i++)
     {
         switch (menu[i])
         {
@@ -433,7 +439,8 @@ void loadUsers()
         token = strtok(line2, ",");
         token = strtok(NULL, ",");
         users[userCount].prev = atof(token);
-        for (int i = 0; i < 12; i++)
+        int i;
+        for (i = 0; i < 12; i++)
         {
             token = strtok(NULL, ",");
             users[userCount].history[i] = atof(token);
@@ -488,7 +495,8 @@ void payBill()
     currentUser.prev = curr;
     // shift the history
     double tmp;
-    for (int i = 0; i < 12; i++)
+    int i;
+    for (i = 0; i < 12; i++)
     {
         tmp = currentUser.history[i];
         currentUser.history[i] = bill;
@@ -531,7 +539,8 @@ void viewBill()
     puts(BCYN "\t\t=" BBLU " Your Bill History (last 12 month) " BCYN "=" COLOR_RESET);
     puts(BCYN "\t\t=====================================" COLOR_RESET);
     puts(BCYN "\t\t|" BMAG "      Month      "BCYN"|"BYEL"       Bill      "BCYN"|" COLOR_RESET);
-    for (int i = 0; i < 12; i++)
+    int i;
+    for (i = 0; i < 12; i++)
     {
         puts(BCYN "\t\t|=================|=================|" COLOR_RESET);
         printf(BCYN"\t\t|\t"BHMAG"%2d        "BCYN"|    "BHRED"%8.2lf     "BCYN"|\n"COLOR_RESET, i + 1, currentUser.history[i]);
@@ -585,7 +594,8 @@ void showUsers()
         puts(user.meter);
         puts(user.phone);
         printf("%lf\n", user.prev);
-        for (int i = 0; i < 12; i++)
+        int i;
+        for (i = 0; i < 12; i++)
         {
             printf("%lf ", user.history[i]);
         }

@@ -94,6 +94,7 @@ void login();
 void registerUser();
 void home();
 void loadUsers();
+void showUsers();
 void payBill();
 void viewBill();
 double calculateBill();
@@ -111,9 +112,9 @@ typedef struct
 
 // Global variables
 #define MAX_USERS 100
-int userCount;
+int userCount = 0;
 User users[MAX_USERS];
-User currentUser;
+User currentUser = {"", "", "", "", {0}, 0};
 
 // Function definitions
 void displayMenu()
@@ -158,7 +159,7 @@ void displayMenu()
             break;
         }
         fflush(stdout);
-        usleep(1000);
+        usleep(5000);
     }
     int choice;
     scanf("%d", &choice);
@@ -175,7 +176,7 @@ void displayMenu()
         break;
     default:
         puts(BRED "\t\tInvalid choice. Please try again.");
-        usleep(1000000);
+        usleep(5000000);
         displayMenu();
     }
 }
@@ -195,6 +196,16 @@ void login()
         {
             found = 1;
             currentUser = users[i];
+            // print current user
+            // puts(currentUser.name);
+            // puts(currentUser.pass);
+            // puts(currentUser.phone);
+            // puts(currentUser.meter);
+            // printf("%f\n", currentUser.prev);
+            // for (int i = 0; i < 12; i++)
+            // {
+            //     printf("%f ", currentUser.history[i]);
+            // }
             break;
         }
     }
@@ -202,38 +213,67 @@ void login()
     if (found)
     {
         puts(BGRN "\t\tLogin successful.");
+        // load user history
+        // FILE *fp = fopen("history.csv", "r");
+        // if (fp == NULL)
+        // {
+        //     puts(BRED "\t\tError loading history.");
+        //     exit(EXIT_FAILURE);
+        // }
+        // char line[100];
+        // while (fgets(line, 100, fp) != NULL)
+        // {
+        //     char *token = strtok(line, ",");
+        //     if (strcmp(token, currentUser.meter) == 0)
+        //     {
+        //         token = strtok(NULL, ",");
+        //         currentUser.prev = atof(token);
+        //         token = strtok(NULL, ",");
+        //         for (int i = 0; i < 12; i++)
+        //         {
+        //             currentUser.history[i] = atof(token);
+        //             token = strtok(NULL, ",");
+        //         }
+        //         break;
+        //     }
+        // }
+        // fclose(fp);
         usleep(1000000);
         home();
     }
     else
     {
         puts(BRED "\t\tLogin failed.");
-        usleep(1000000);
+        usleep(5000000);
         puts("\n\n");
         puts(BCYN "\t\t=============================");
         puts(BBLU "\t\t Press any key to try again.");
         puts(BBLU "\t\t Press " BRED "0" BBLU " to go back to menu.");
         puts(BCYN "\t\t=============================");
         printf(BYEL "\t\t> " COLOR_RESET);
-        int choice;
-        scanf("%d", &choice);
-        if (choice == 0)
+        getchar();
+        char choice=getchar();
+        // scanf("%d", &choice);
+        if (choice == '0')
         {
             displayMenu();
         }
-        login();
+        else
+        {
+            login();
+        }
     }
 }
 
 void registerUser()
 {
-    loadUsers();
+    // loadUsers();
     CLEAR;
     // check if user limit is reached
     if (userCount == MAX_USERS)
     {
         puts(BRED "\t\tUser limit reached. Please try again later.");
-        usleep(1000000);
+        usleep(5000000);
         displayMenu();
         return;
     }
@@ -243,7 +283,7 @@ void registerUser()
     if (fp == NULL || fp2 == NULL)
     {
         puts(BRED "\t\tError opening file. Please try again.");
-        usleep(1000000);
+        usleep(5000000);
         displayMenu();
     }
     // input the user details in the registry
@@ -251,9 +291,9 @@ void registerUser()
     scanf("%s", currentUser.name);
     printf("\t\tEnter your password: ");
     scanf("%s", currentUser.pass);
-    printf("\t\tEnter your phone number: ");
+    printf("\t\tEnter your phone number(11 digit): ");
     scanf("%s", currentUser.phone);
-    printf("\t\tEnter your meter number: ");
+    printf("\t\tEnter your meter number(10 digit): ");
     scanf("%s", currentUser.meter);
     // check if user already exists
     int found = 0;
@@ -268,23 +308,30 @@ void registerUser()
     if (found)
     {
         puts(BRED "\t\tUser already exists. Please try again.");
-        usleep(1000000);
+        usleep(5000000);
         displayMenu();
         return;
     }
+    // initialize the user history
+    currentUser.prev = 0.0;
+    for (size_t i = 0; i < 12; i++)
+    {
+        currentUser.history[i] = 0.0;
+    }
     // add user to the registry
     users[userCount] = currentUser;
+    
     // write the user details to the file
     fprintf(fp, "%s,%s,%s,%s\n", users[userCount].name, users[userCount].pass, users[userCount].phone, users[userCount].meter);
     fclose(fp);
 
     // initialize the user's history    
-    fprintf(fp, "%s,%020.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf", currentUser.name, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    fprintf(fp2, "%s,%020.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf\n", currentUser.meter, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
     fclose(fp2);
 
     puts(BGRN "\t\tRegistration successful.");
-    usleep(1000000);
+    usleep(5000000);
     home();
 }
 
@@ -329,7 +376,7 @@ void home()
             break;
         }
         fflush(stdout);
-        usleep(1000);
+        usleep(5000);
     }
     int choice;
     scanf("%d", &choice);
@@ -342,11 +389,12 @@ void home()
         viewBill();
         break;
     case 3:
+        // logout
         displayMenu();
         break;
     default:
         puts(BRED "\t\tInvalid choice. Please try again.");
-        usleep(1000000);
+        usleep(5000000);
         home();
     }
 }
@@ -360,7 +408,7 @@ void loadUsers()
     if (fp == NULL || fp2 == NULL)
     {
         puts(BRED "\t\tError opening file. Please try again.");
-        usleep(1000000);
+        usleep(5000000);
         displayMenu();
     }
     char line1[100], line2[150];
@@ -393,6 +441,7 @@ void loadUsers()
         userCount++;
     }
     fclose(fp);
+    // showUsers();
 }
 
 void payBill()
@@ -407,7 +456,7 @@ void payBill()
     if (fp == NULL)
     {
         puts(BRED "\t\tError opening file. Please try again.");
-        usleep(1000000);
+        usleep(5000000);
         exit(EXIT_FAILURE);
     }
     char line[100];
@@ -431,7 +480,7 @@ void payBill()
     if (curr < currentUser.prev)
     {
         puts(BRED "\t\tInvalid reading. Please try again.");
-        usleep(1000000);
+        usleep(5000000);
         payBill();
     }
     // calculate the bill
@@ -522,6 +571,28 @@ double calculateBill(double units)
         bill = 100 * 1.5 + 100 * 2.0 + 100 * 3.0 + 100 * 4.0 + 100 * 5.0 + (units - 500) * 6.0;
     }
     return bill;
+}
+
+void showUsers()
+{
+    // print all user data
+    for (size_t i = 0; i < userCount; i++)
+    {
+        User user = users[i];
+        puts("=====================================");
+        puts(user.name);
+        puts(user.pass);
+        puts(user.meter);
+        puts(user.phone);
+        printf("%lf\n", user.prev);
+        for (int i = 0; i < 12; i++)
+        {
+            printf("%lf ", user.history[i]);
+        }
+        
+        puts("=====================================");
+    }
+    usleep(5000000);
 }
 
 #endif

@@ -315,7 +315,7 @@ void registerUser()
     }
     // initialize the user history
     currentUser.prev = 0.0;
-    for (size_t i = 0; i < 12; i++)
+    for (i = 0; i < 12; i++)
     {
         currentUser.history[i] = 0.0;
     }
@@ -577,7 +577,7 @@ double calculateBill(double units)
 void showUsers()
 {
     // print all user data
-    for (size_t i = 0; i < userCount; i++)
+    for (i = 0; i < userCount; i++)
     {
         User user = users[i];
         puts("=====================================");

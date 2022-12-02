@@ -7,82 +7,12 @@
 #include <ctype.h>
 #include <time.h>
 
-// Regular text
-#define BLK "\e[0;30m"
-#define RED "\e[0;31m"
-#define GRN "\e[0;32m"
-#define YEL "\e[0;33m"
-#define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
-#define CYN "\e[0;36m"
-#define WHT "\e[0;37m"
-
-// Regular bold text
-#define BBLK "\e[1;30m"
-#define BRED "\e[1;31m"
-#define BGRN "\e[1;32m"
-#define BYEL "\e[1;33m"
-#define BBLU "\e[1;34m"
-#define BMAG "\e[1;35m"
-#define BCYN "\e[1;36m"
-#define BWHT "\e[1;37m"
-
-// Regular underline text
-#define UBLK "\e[4;30m"
-#define URED "\e[4;31m"
-#define UGRN "\e[4;32m"
-#define UYEL "\e[4;33m"
-#define UBLU "\e[4;34m"
-#define UMAG "\e[4;35m"
-#define UCYN "\e[4;36m"
-#define UWHT "\e[4;37m"
-
-// Regular background
-#define BLKB "\e[40m"
-#define REDB "\e[41m"
-#define GRNB "\e[42m"
-#define YELB "\e[43m"
-#define BLUB "\e[44m"
-#define MAGB "\e[45m"
-#define CYNB "\e[46m"
-#define WHTB "\e[47m"
-
-// High intensty background
-#define BLKHB "\e[0;100m"
-#define REDHB "\e[0;101m"
-#define GRNHB "\e[0;102m"
-#define YELHB "\e[0;103m"
-#define BLUHB "\e[0;104m"
-#define MAGHB "\e[0;105m"
-#define CYNHB "\e[0;106m"
-#define WHTHB "\e[0;107m"
-
-// High intensty text
-#define HBLK "\e[0;90m"
-#define HRED "\e[0;91m"
-#define HGRN "\e[0;92m"
-#define HYEL "\e[0;93m"
-#define HBLU "\e[0;94m"
-#define HMAG "\e[0;95m"
-#define HCYN "\e[0;96m"
-#define HWHT "\e[0;97m"
-
-// Bold high intensity text
-#define BHBLK "\e[1;90m"
-#define BHRED "\e[1;91m"
-#define BHGRN "\e[1;92m"
-#define BHYEL "\e[1;93m"
-#define BHBLU "\e[1;94m"
-#define BHMAG "\e[1;95m"
-#define BHCYN "\e[1;96m"
-#define BHWHT "\e[1;97m"
-
-// Reset
-#define reset "\e[0m"
-#define CRESET "\e[0m"
-#define COLOR_RESET "\e[0m"
-
+#ifdef _WIN32
+#define CLEAR system("cls")
+#else
 #define CLEAR printf("\033[2J\033[1;1H")
+#endif
+
 #define PAUSE                             \
     printf("Press Enter to continue..."); \
     getchar();                            \
@@ -113,7 +43,7 @@ typedef struct
 // Global variables
 #define MAX_USERS 100
 int userCount = 0;
-int i=0;
+int i = 0;
 User users[MAX_USERS];
 User currentUser = {"", "", "", "", {0}, 0};
 
@@ -135,30 +65,7 @@ void displayMenu()
         "\n\t\tPlease enter your choice: ";
     for (i = 0; i < strlen(menu); i++)
     {
-        switch (menu[i])
-        {
-        case '1':
-            printf(BGRN "%c" COLOR_RESET, menu[i]);
-            break;
-        case '2':
-            printf(BMAG "%c" COLOR_RESET, menu[i]);
-            break;
-        case '3':
-            printf(BHRED "%c" COLOR_RESET, menu[i]);
-            break;
-        case '=':
-            printf(BBLU "%c" COLOR_RESET, menu[i]);
-            break;
-        case '-':
-            printf(BBLU "%c" COLOR_RESET, menu[i]);
-            break;
-        case '|':
-            printf(BBLU "%c" COLOR_RESET, menu[i]);
-            break;
-        default:
-            printf(BCYN "%c" COLOR_RESET, menu[i]);
-            break;
-        }
+        printf("%c", menu[i]);
         fflush(stdout);
         usleep(5000);
     }
@@ -176,8 +83,8 @@ void displayMenu()
         exit(EXIT_SUCCESS);
         break;
     default:
-        puts(BRED "\t\tInvalid choice. Please try again.");
-        usleep(5000000);
+        puts("\t\tInvalid choice. Please try again.");
+        usleep(2000000);
         displayMenu();
     }
 }
@@ -197,63 +104,28 @@ void login()
         {
             found = 1;
             currentUser = users[i];
-            // print current user
-            // puts(currentUser.name);
-            // puts(currentUser.pass);
-            // puts(currentUser.phone);
-            // puts(currentUser.meter);
-            // printf("%f\n", currentUser.prev);
-            // for (i = 0; i < 12; i++)
-            // {
-            //     printf("%f ", currentUser.history[i]);
-            // }
             break;
         }
     }
 
     if (found)
     {
-        puts(BGRN "\t\tLogin successful.");
-        // load user history
-        // FILE *fp = fopen("history.csv", "r");
-        // if (fp == NULL)
-        // {
-        //     puts(BRED "\t\tError loading history.");
-        //     exit(EXIT_FAILURE);
-        // }
-        // char line[100];
-        // while (fgets(line, 100, fp) != NULL)
-        // {
-        //     char *token = strtok(line, ",");
-        //     if (strcmp(token, currentUser.meter) == 0)
-        //     {
-        //         token = strtok(NULL, ",");
-        //         currentUser.prev = atof(token);
-        //         token = strtok(NULL, ",");
-        //         for (i = 0; i < 12; i++)
-        //         {
-        //             currentUser.history[i] = atof(token);
-        //             token = strtok(NULL, ",");
-        //         }
-        //         break;
-        //     }
-        // }
-        // fclose(fp);
+        puts("\t\tLogin successful.");
         usleep(1000000);
         home();
     }
     else
     {
-        puts(BRED "\t\tLogin failed.");
-        usleep(5000000);
+        puts("\t\tLogin failed.");
+        usleep(2000000);
         puts("\n\n");
-        puts(BCYN "\t\t=============================");
-        puts(BBLU "\t\t Press any key to try again.");
-        puts(BBLU "\t\t Press " BRED "0" BBLU " to go back to menu.");
-        puts(BCYN "\t\t=============================");
-        printf(BYEL "\t\t> " COLOR_RESET);
+        puts("\t\t=============================");
+        puts("\t\t Press Enter to try again.");
+        puts("\t\t Press 0 to go back to menu.");
+        puts("\t\t=============================");
+        printf("\t\t> ");
         getchar();
-        char choice=getchar();
+        char choice = getchar();
         // scanf("%d", &choice);
         if (choice == '0')
         {
@@ -273,8 +145,8 @@ void registerUser()
     // check if user limit is reached
     if (userCount == MAX_USERS)
     {
-        puts(BRED "\t\tUser limit reached. Please try again later.");
-        usleep(5000000);
+        puts("\t\tUser limit reached. Please try again later.");
+        usleep(2000000);
         displayMenu();
         return;
     }
@@ -283,8 +155,8 @@ void registerUser()
     FILE *fp2 = fopen("history.csv", "a");
     if (fp == NULL || fp2 == NULL)
     {
-        puts(BRED "\t\tError opening file. Please try again.");
-        usleep(5000000);
+        puts("\t\tError opening file. Please try again.");
+        usleep(2000000);
         displayMenu();
     }
     // input the user details in the registry
@@ -308,8 +180,8 @@ void registerUser()
     }
     if (found)
     {
-        puts(BRED "\t\tUser already exists. Please try again.");
-        usleep(5000000);
+        puts("\t\tUser already exists. Please try again.");
+        usleep(2000000);
         displayMenu();
         return;
     }
@@ -321,18 +193,18 @@ void registerUser()
     }
     // add user to the registry
     users[userCount] = currentUser;
-    
+
     // write the user details to the file
     fprintf(fp, "%s,%s,%s,%s\n", users[userCount].name, users[userCount].pass, users[userCount].phone, users[userCount].meter);
     fclose(fp);
 
-    // initialize the user's history    
+    // initialize the user's history
     fprintf(fp2, "%s,%020.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf,%07.2lf\n", currentUser.meter, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
     fclose(fp2);
 
-    puts(BGRN "\t\tRegistration successful.");
-    usleep(5000000);
+    puts("\t\tRegistration successful.");
+    usleep(2000000);
     home();
 }
 
@@ -352,30 +224,7 @@ void home()
                  "\n\t\tPlease enter your choice: ";
     for (i = 0; i < strlen(menu); i++)
     {
-        switch (menu[i])
-        {
-        case '1':
-            printf(BGRN "%c" COLOR_RESET, menu[i]);
-            break;
-        case '2':
-            printf(BMAG "%c" COLOR_RESET, menu[i]);
-            break;
-        case '3':
-            printf(BHRED "%c" COLOR_RESET, menu[i]);
-            break;
-        case '=':
-            printf(BBLU "%c" COLOR_RESET, menu[i]);
-            break;
-        case '-':
-            printf(BBLU "%c" COLOR_RESET, menu[i]);
-            break;
-        case '|':
-            printf(BBLU "%c" COLOR_RESET, menu[i]);
-            break;
-        default:
-            printf(BCYN "%c" COLOR_RESET, menu[i]);
-            break;
-        }
+        printf("%c", menu[i]);
         fflush(stdout);
         usleep(5000);
     }
@@ -394,8 +243,8 @@ void home()
         displayMenu();
         break;
     default:
-        puts(BRED "\t\tInvalid choice. Please try again.");
-        usleep(5000000);
+        puts("\t\tInvalid choice. Please try again.");
+        usleep(2000000);
         home();
     }
 }
@@ -408,8 +257,8 @@ void loadUsers()
     FILE *fp2 = fopen("history.csv", "r");
     if (fp == NULL || fp2 == NULL)
     {
-        puts(BRED "\t\tError opening file. Please try again.");
-        usleep(5000000);
+        puts("\t\tError opening file. Please try again.");
+        usleep(2000000);
         displayMenu();
     }
     char line1[100], line2[150];
@@ -449,19 +298,19 @@ void payBill()
 {
     CLEAR;
     puts("\n\n\n");
-    puts(BCYN "\t\t=====================================" COLOR_RESET);
-    puts(BCYN "\t\t== " BBLU "Welcome to the E-Billing System" BCYN " ==" COLOR_RESET);
-    puts(BCYN "\t\t=====================================" COLOR_RESET);
+    puts("\t\t=====================================");
+    puts("\t\t== Welcome to the E-Billing System ==");
+    puts("\t\t=====================================");
     // get the user's history
     FILE *fp = fopen("history.csv", "r+");
     if (fp == NULL)
     {
-        puts(BRED "\t\tError opening file. Please try again.");
-        usleep(5000000);
+        puts("\t\tError opening file. Please try again.");
+        usleep(2000000);
         exit(EXIT_FAILURE);
     }
     char line[100];
-    int bytes=0;
+    int bytes = 0;
     char *token;
     while (fgets(line, 100, fp) != NULL)
     {
@@ -480,8 +329,8 @@ void payBill()
     // if the current reading is less than the previous reading
     if (curr < currentUser.prev)
     {
-        puts(BRED "\t\tInvalid reading. Please try again.");
-        usleep(5000000);
+        puts("\t\tInvalid reading. Please try again.");
+        usleep(2000000);
         payBill();
     }
     // calculate the bill
@@ -503,19 +352,9 @@ void payBill()
 
     // display the bill
     printf("\t\tYour bill is: ");
-    int factor = bill/currentUser.history[1];
-    switch (factor)
-    {
-        case 0:
-            printf( BGRN "Tk. %.2lf" COLOR_RESET "\n", bill);
-            break;
-        case 1:
-            printf( BYEL "Tk. %.2lf" COLOR_RESET "\n", bill);
-            break;
-        default:
-            printf( BRED "Tk. %.2lf" COLOR_RESET "\n", bill);
-            break;
-    }
+    int factor = bill / currentUser.history[1];
+    printf("Tk. %.2lf\n", bill);
+
     printf("\t\tPress any key to continue...");
     getchar();
     getchar();
@@ -526,18 +365,18 @@ void viewBill()
 {
     CLEAR;
     puts("\n\n\n");
-    puts(BCYN "\t\t=====================================" COLOR_RESET);
-    puts(BCYN "\t\t== " BBLU "Welcome to the E-Billing System" BCYN " ==" COLOR_RESET);
-    puts(BCYN "\t\t=====~~~~~~~~~~~~~~~~~~~~~~~~~~~=====" COLOR_RESET);
-    puts(BCYN "\t\t=" BBLU " Your Bill History (last 12 month) " BCYN "=" COLOR_RESET);
-    puts(BCYN "\t\t=====================================" COLOR_RESET);
-    puts(BCYN "\t\t|" BMAG "      Month      "BCYN"|"BYEL"       Bill      "BCYN"|" COLOR_RESET);
+    puts("\t\t=====================================");
+    puts("\t\t== Welcome to the E-Billing System ==");
+    puts("\t\t=====~~~~~~~~~~~~~~~~~~~~~~~~~~~=====");
+    puts("\t\t= Your Bill History (last 12 month) =");
+    puts("\t\t=====================================");
+    puts("\t\t|      Month      |       Bill      |");
     for (i = 0; i < 12; i++)
     {
-        puts(BCYN "\t\t|=================|=================|" COLOR_RESET);
-        printf(BCYN"\t\t|\t"BHMAG"%2d        "BCYN"|    "BHRED"%8.2lf     "BCYN"|\n"COLOR_RESET, i + 1, currentUser.history[i]);
+        printf("\t\t|=================|=================|\n");
+        printf("\t\t|\t%2d        |    %8.2lf     |\n", i + 1, currentUser.history[i]);
     }
-    puts(BCYN "\t\t=====================================" COLOR_RESET);
+    puts("\t\t=====================================");
     printf("\t\tPress any key to continue...");
     getchar();
     getchar();
@@ -590,10 +429,10 @@ void showUsers()
         {
             printf("%lf ", user.history[i]);
         }
-        
+
         puts("=====================================");
     }
-    usleep(5000000);
+    usleep(2000000);
 }
 
 #endif

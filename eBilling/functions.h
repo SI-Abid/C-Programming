@@ -24,7 +24,6 @@ void login();
 void registerUser();
 void home();
 void loadUsers();
-void showUsers();
 void payBill();
 void viewBill();
 double calculateBill();
@@ -352,7 +351,6 @@ void payBill()
 
     // display the bill
     printf("\t\tYour bill is: ");
-    int factor = bill / currentUser.history[1];
     printf("Tk. %.2lf\n", bill);
 
     printf("\t\tPress any key to continue...");
@@ -386,53 +384,35 @@ void viewBill()
 double calculateBill(double units)
 {
     double bill = 0.0;
-    if (units <= 100)
+    if (units <= 50)
     {
-        bill = units * 1.5;
+        bill = units * 3.33;
+    }
+    else if (units <= 75)
+    {
+        bill = 50 * 3.33 + (units - 50) * 3.80;
     }
     else if (units <= 200)
     {
-        bill = 100 * 1.5 + (units - 100) * 2.0;
+        bill = 50 * 3.33 + 25 * 3.80 + (units - 75) * 5.14;
     }
     else if (units <= 300)
     {
-        bill = 100 * 1.5 + 100 * 2.0 + (units - 200) * 3.0;
+        bill = 50 * 3.33 + 25 * 3.80 + 100 * 5.14 + (units - 200) * 5.36;
     }
     else if (units <= 400)
     {
-        bill = 100 * 1.5 + 100 * 2.0 + 100 * 3.0 + (units - 300) * 4.0;
+        bill = 50 * 3.33 + 25 * 3.80 + 100 * 5.14 + 100 * 5.36 + (units - 300) * 5.63;
     }
-    else if (units <= 500)
+    else if (units <= 600)
     {
-        bill = 100 * 1.5 + 100 * 2.0 + 100 * 3.0 + 100 * 4.0 + (units - 400) * 5.0;
+        bill = 50 * 3.33 + 25 * 3.80 + 100 * 5.14 + 100 * 5.36 + 100 * 5.63 + (units - 400) * 8.70;
     }
     else
     {
-        bill = 100 * 1.5 + 100 * 2.0 + 100 * 3.0 + 100 * 4.0 + 100 * 5.0 + (units - 500) * 6.0;
+        bill = 50 * 3.33 + 25 * 3.80 + 100 * 5.14 + 100 * 5.36 + 100 * 5.63 + 200 * 8.70 + (units - 600) * 9.98;
     }
     return bill;
-}
-
-void showUsers()
-{
-    // print all user data
-    for (i = 0; i < userCount; i++)
-    {
-        User user = users[i];
-        puts("=====================================");
-        puts(user.name);
-        puts(user.pass);
-        puts(user.meter);
-        puts(user.phone);
-        printf("%lf\n", user.prev);
-        for (i = 0; i < 12; i++)
-        {
-            printf("%lf ", user.history[i]);
-        }
-
-        puts("=====================================");
-    }
-    usleep(2000000);
 }
 
 #endif
